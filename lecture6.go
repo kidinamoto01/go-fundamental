@@ -1,8 +1,3 @@
-/*
-在go语言中不支持指针，通过&来访问地址，＊来访问值
-默认值为nil，而不是NULL
-*/
-
 package main
 
 import (
@@ -11,72 +6,29 @@ import (
 
 func main() {
 
-	//指针类型在Go语言中的应用
-	a := 1
-	var p *int = &a
+	a := [2]int{1, 2}
+	b := [2]int{1, 2}
 
-	fmt.Println(*p)
+	//严格比较，只有大小相同才能比较类型
+	fmt.Println(a == b)
 
-	//递增递减，只能作为语句，不能作为符号，只能放在右边
+	//冒泡排序
 
-	//判断语句if
-	//条件表达式没有括号
-	m := -1
-	if m := 1; m > 0 {
+	m := [...]int{5, 8, 1, 4, 9, 2}
 
-		//a的作用范围只在if语句内
-		fmt.Println("m>0")
-	}
 	fmt.Println(m)
-	//for实现多个关键字的形式
 
-	b := 1
-	//无限循环
-	for {
+	for i := 0; i < len(m); i++ {
 
-		b++
-		if b > 3 {
-			break
+		for j := i + 1; j < len(m); j++ {
+
+			if m[i] > m[j] {
+				tmp := m[i]
+				m[i] = m[j]
+				m[j] = tmp
+			}
 		}
-
-		fmt.Println(b)
 	}
 
-	fmt.Println("over")
-
-	//与java相类似的for循环形式
-	s := "string"
-	for i := 0; i < len(s); i++ {
-
-		fmt.Println(i)
-	}
-
-	//单一判断语句
-	i := 0
-	for i < len(s) {
-		i++
-		fmt.Println(i)
-	}
-
-	//switch 语句的多种形式
-	switch i {
-	case 0:
-		fmt.Println("i=0")
-	case 1:
-		fmt.Println("i=1")
-	default:
-		fmt.Println("i>1")
-
-	}
-
-	//switch后没有条件表达式
-	switch {
-	case i > 1:
-		fmt.Println("i>1")
-		fallthrough //不执行break，继续判断
-	case i > 2:
-		fmt.Println("i>2")
-
-	}
-
+	fmt.Println(m)
 }
