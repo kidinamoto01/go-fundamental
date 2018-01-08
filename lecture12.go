@@ -5,15 +5,39 @@ import (
 )
 
 func main() {
-	c := make(chan bool)
-	go func() {
-		fmt.Println("Go Go Go ")
-		c <- true
-		close(c) //必须明确关闭，否则会死锁
-	}()
+	c1, c2 := make(chan int), make(chan string)
 
-	//读出channel内容后结束main函数
-	for v := range c {
-		fmt.Println(v)
+	o := make(chan bool, 2)
+	//o := make(chan bool)
+	//select作为接受者
+	go func() {
+		for {
+			select {
+			case v, ok := <-c1:
+				if !ok {
+					o <- true
+					break
+				}
+				fmt.Println("c1 :", v)
+			case v, ok := <-c2:
+				if !ok {
+					o <- true
+					break
+				}
+				fmt.Println("c2 :", v)
+			}
+		}
+	}()
+	c1 <- 1
+	c2 <- "hi"
+	c1 <- 2
+	c2 <- "hello"
+
+	close(c1)
+	//只要关闭一个channel close(c2)
+	for i := 0; i < 2; i++ {
+		<-o
 	}
+	//select作为发送者
+
 }
