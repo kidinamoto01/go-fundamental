@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 func main() {
+	c := make(chan bool)
+	go func() {
+		fmt.Println("Go Go Go ")
+		c <- true
+	}()
 
-	go Go()
-	time.Sleep(2 * time.Second)
-}
-
-func Go() {
-	fmt.Println("Go Go Go")
+	<-c //读出channel内容后结束main函数
 }
